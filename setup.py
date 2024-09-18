@@ -1,20 +1,12 @@
 import os, sys
 #from setuptools import setup
 import distutils.core
+from distutils.command.build_py import build_py
 
-# Building through 2to3, for Python 3 (see also setup(...,
-# cmdclass=...), below:
-try:
-    from distutils.command.build_py import build_py_2to3 as build_py
-except ImportError:
-    # 2.x
-    from distutils.command.build_py import build_py
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 extras = {}
-if sys.version_info >= (3,):
-    extras['use_2to3'] = True
 
 readme = 'README'
 

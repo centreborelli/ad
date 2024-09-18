@@ -90,10 +90,10 @@ def chol(A, side='lower'):
     A = np.array(A)
     assert A.shape[0]==A.shape[1], 'Input matrix must be square'
     
-    L = [[0.0] * len(A) for _ in xrange(len(A))]
-    for i in xrange(len(A)):
-        for j in xrange(i+1):
-            s = sum(L[i][k] * L[j][k] for k in xrange(j))
+    L = [[0.0] * len(A) for _ in range(len(A))]
+    for i in range(len(A)):
+        for j in range(i+1):
+            s = sum(L[i][k] * L[j][k] for k in range(j))
             L[i][j] = (A[i][i] - s)**0.5 if (i == j) else \
                       (1.0 / L[j][j] * (A[i][j] - s))
                           
@@ -168,7 +168,7 @@ def qr(A):
     m, n = A.shape
     qm = np.eye(m)
     rm = A.copy()
-    for i in xrange(n-1 if m==n else n):
+    for i in range(n-1 if m==n else n):
         x = getSubmatrix(rm, i, i, m, i)
         h = np.eye(m)
         h = setSubmatrix(h, i, i, householder(x))
@@ -247,24 +247,24 @@ def lu(A):
     assert A.shape[0]==A.shape[1], 'Input matrix must be square'
     
     n = len(A)
-    L = [[0.0]*n for i in xrange(n)]
-    U = [[0.0]*n for i in xrange(n)]
+    L = [[0.0]*n for i in range(n)]
+    U = [[0.0]*n for i in range(n)]
     
     # Create the pivoting matrix for A
-    P = [[float(i == j) for i in xrange(n)] for j in xrange(n)]
-    for j in xrange(n):
-        row = max(xrange(j, n), key=lambda i: A[i][j])
+    P = [[float(i == j) for i in range(n)] for j in range(n)]
+    for j in range(n):
+        row = max(range(j, n), key=lambda i: A[i][j])
         if j != row:
             P[j], P[row] = P[row], P[j]
     
     A2 = np.dot(P, A)
-    for j in xrange(n):
+    for j in range(n):
         L[j][j] = 1.0
-        for i in xrange(j+1):
-            s1 = sum(U[k][j] * L[i][k] for k in xrange(i))
+        for i in range(j+1):
+            s1 = sum(U[k][j] * L[i][k] for k in range(i))
             U[i][j] = A2[i][j] - s1
-        for i in xrange(j, n):
-            s2 = sum(U[k][j] * L[i][k] for k in xrange(j))
+        for i in range(j, n):
+            s2 = sum(U[k][j] * L[i][k] for k in range(j))
             L[i][j] = (A2[i][j] - s2) / U[j][j]
     return (np.array(L), np.array(U), np.array(P))
     
@@ -491,7 +491,7 @@ def solveUpperTriangular(r, b):
     n = r.shape[1]
     
     x = np.zeros((n, 1))
-    for k in xrange(n - 1, -1, -1):
+    for k in range(n - 1, -1, -1):
         idx = min(n - 1, k)
         x[k, 0] = (b[k] - np.dot(getSubmatrix(r, k, idx, k, n - 1),
             getSubmatrix(x, idx, 0, n - 1, 0)))/r[k, k]
@@ -526,7 +526,7 @@ def polyfit(x, y, n):
         
     """
     a = np.empty((len(x), n + 1))
-    for i in xrange(a.shape[0]):
-        for j in xrange(a.shape[1]):
+    for i in range(a.shape[0]):
+        for j in range(a.shape[1]):
             a[i, j] = 1 if j==0 else x[i]**j
     return lstsq(a, y)
